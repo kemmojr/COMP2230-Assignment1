@@ -1,11 +1,13 @@
 import java.text.DecimalFormat;
 
-public class edge {
-    private int[] conectingVertexes;
+public class edge implements Comparable<edge>{
+    private hotSpot[] conectedHotSpots;
     private double x1, y1, x2, y2, len;
 
     public edge(hotSpot A, hotSpot B){
-        conectingVertexes = new int[]{A.getID(),B.getID()};
+        conectedHotSpots = new hotSpot[2];
+        conectedHotSpots[0] = A;
+        conectedHotSpots[1] = B;
         x1 = A.getX();
         x2 = B.getX();
         y1 = A.getY();
@@ -19,7 +21,21 @@ public class edge {
         return len;
     }
 
-    public int[] getConectingVertexes() {
-        return conectingVertexes;
+    public hotSpot getEnd1(){
+        return conectedHotSpots[0];
+    }
+
+    public hotSpot getEnd2(){
+        return conectedHotSpots[1];
+    }
+
+    @Override
+    public int compareTo(edge o) {
+        if (this.len==o.len)
+            return 0;
+        else if (this.len>o.len)
+            return 1;
+
+        return -1;
     }
 }

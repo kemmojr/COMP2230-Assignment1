@@ -9,6 +9,12 @@ public class hotSpot {
         y = yVal;
     }
 
+    public hotSpot(hotSpot A){//copy constructor
+        this.ID = A.ID;
+        this.x = A.x;
+        this.y = A.y;
+    }
+
     //Getters
     public int getID(){
         return ID;
