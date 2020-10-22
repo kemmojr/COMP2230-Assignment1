@@ -1,4 +1,5 @@
 import java.lang.reflect.Array;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -77,10 +78,34 @@ public class graph {
                 clusterIDs.add(i);
             }
         }
-        int num = 1;
-        for (Integer i:clusterIDs){
-            System.out.println("Cluster ID "+num+++" "+i);
+
+        ArrayList<ArrayList<sNode>> allClusterNodes = new ArrayList<>();
+
+        for (int i = 0; i < clusterIDs.size(); i++) {
+            ArrayList<sNode> singleCluster = new ArrayList<>();
+            for (sNode s:allNodes){
+                if (sets.findSet(s).getDataID()==clusterIDs.get(i)){
+                    singleCluster.add(s);
+                }
+            }
+            allClusterNodes.add(singleCluster);
         }
+        ArrayList<hotSpot> stations = new ArrayList<>();
+        ArrayList<ArrayList<Integer>> HSInStation = new ArrayList<>();
+        for (int i = 0; i < allClusterNodes.size(); i++){
+            stations.add(getAvgPoint(allClusterNodes.get(i),i));
+            ArrayList<Integer> IDList = new ArrayList<>();
+            for (sNode s:allClusterNodes.get(i)){
+                IDList.add(s.getDataID());
+            }
+            HSInStation.add(IDList);
+        }
+        for (hotSpot h:stations){
+            System.out.println(h);
+        }
+        
+        //System.out.println("");
+
     }
 
     public void addEdge(edge adding){
@@ -100,5 +125,18 @@ public class graph {
          else
             return false;
 
+    }
+
+    public hotSpot getAvgPoint(ArrayList<sNode> clusterNodes, int stationNum){
+        double avgX = 0, avgY = 0, numNodes = clusterNodes.size();
+        for (sNode s:clusterNodes){
+            avgX += s.getDataX();
+            avgY += s.getDataY();
+        }
+        DecimalFormat df = new DecimalFormat("#.##");
+        avgX = Double.parseDouble(df.format(avgX/numNodes));
+        avgY = Double.parseDouble(df.format(avgY/numNodes));
+        hotSpot station = new hotSpot(stationNum, avgX, avgY);
+        return station;
     }
 }

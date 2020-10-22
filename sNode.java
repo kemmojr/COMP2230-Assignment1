@@ -18,6 +18,14 @@ public class sNode {
         return data.getID();
     }
 
+    public double getDataX(){
+        return data.getX();
+    }
+
+    public double getDataY(){
+        return data.getY();
+    }
+
     public sNode getParent() {
         return parent;
     }
