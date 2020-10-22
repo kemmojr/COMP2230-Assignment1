@@ -48,6 +48,7 @@ public class kcluster {
         System.out.println("\nThere are "+ numHotSpots +" hotspots.");
         System.out.println("You have requested "+ args[1] + " temporary fire stations.");
         graph.kruskalMST();
+        System.out.println("\nThank you for using Kruskal's Clustering. Bye");
 
     }
 }

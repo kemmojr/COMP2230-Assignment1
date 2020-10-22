@@ -30,6 +30,6 @@ public class hotSpot {
 
     @Override
     public String toString() {
-        return ID + ", " + x + ", " + y;
+        return  "(" + x + ", " + y + ")";
     }
 }

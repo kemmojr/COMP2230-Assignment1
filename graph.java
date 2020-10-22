@@ -58,9 +58,10 @@ public class graph {
     //2. Pick the smallest edge. Check if it forms a cycle with the spanning tree formed so far. If cycle is not formed, include this edge. Else, discard it.
     //3. Repeat until there are V-1 edges (where V is the number of vertices in the given graph)
     public void kruskalMST(){
-        int numCheck = 1, stationsPlaced = 0, clustersIdentified = 0;
+        int numCheck = 1;
         ArrayList<Integer> clusterIDs = new ArrayList<>();
         addedEdges = new ArrayList<>();
+        ArrayList<edge> interClusterEdges = new ArrayList<>();
         Arrays.sort(allEdges);
         addEdge(allEdges[0]);
         while (addedEdges.size()<allHotSpots.length-(1+(clustersToFind-1))){
@@ -68,6 +69,14 @@ public class graph {
                 addEdge(allEdges[numCheck]);
             }
             numCheck++;
+        }
+
+        for (int i = 0; i < clustersToFind-1; i++) {//finds all of the edges between the clusters
+            for (edge e:allEdges){
+                if (!makesCycle(e))
+                    interClusterEdges.add(e);
+                numCheck++;
+            }
         }
 
         //get all of the hotspots and categorise them into groups for each hotspot. Then find the average value for all the points in each hotspot
@@ -93,18 +102,26 @@ public class graph {
         ArrayList<hotSpot> stations = new ArrayList<>();
         ArrayList<ArrayList<Integer>> HSInStation = new ArrayList<>();
         for (int i = 0; i < allClusterNodes.size(); i++){
-            stations.add(getAvgPoint(allClusterNodes.get(i),i));
+            int j = i+1;
+            stations.add(getAvgPoint(allClusterNodes.get(i),j));
             ArrayList<Integer> IDList = new ArrayList<>();
             for (sNode s:allClusterNodes.get(i)){
                 IDList.add(s.getDataID());
             }
             HSInStation.add(IDList);
         }
-        for (hotSpot h:stations){
-            System.out.println(h);
+        for (int i = 0; i < stations.size(); i++) {
+            System.out.println("Station " + stations.get(i).getID() + ":\nCoordinates: " + stations.get(i));
+            System.out.print("Hotspots: {");
+            for (int n = 0;n<HSInStation.get(i).size();n++){
+                if (n==HSInStation.get(i).size()-1)
+                    System.out.print(HSInStation.get(i).get(n) + "}\n\n");
+                else
+                    System.out.print(HSInStation.get(i).get(n) + ",");
+            }
         }
-        
-        //System.out.println("");
+        interClusterEdges.sort(edge::compareTo);
+        System.out.println("Inter-clustering distance: " + String.format("%.02f",interClusterEdges.get(0).getLength()));//Outputs the shortest inter-clustering distance
 
     }
 
