@@ -3,29 +3,35 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class graph {
-    /*Disjoint set methods:
-    makeSet(i) - makes a new set containing the element i
-    findSet(i) - finds the identifier element of the set that i is a part of
-    union(i, j) - replaces the two separate sets of i and j with their union which usually involves making one the child of the root of another.*/
+
 
     private hotSpot[] allHotSpots;
+    private sNode[] allNodes;
     private edge[] allEdges;
-    private ArrayList<ArrayList<edge>> spanningTrees;
+    private ArrayList<edge> addedEdges;
+    private subset sets;
+    private int clustersToFind;
 
-    public graph(hotSpot[] hotSpots){
+    public graph(hotSpot[] hotSpots, int numClusters){
+        clustersToFind = numClusters;
         int numVertices = hotSpots.length, edgeNum = 0;
         allHotSpots = new hotSpot[numVertices];
+        allNodes = new sNode[numVertices];
         System.arraycopy(hotSpots, 0, allHotSpots, 0, hotSpots.length);
+        for (int i = 0; i < allHotSpots.length; i++){
+            allNodes[i] = new sNode(allHotSpots[i]);//creates a node for each hotSpot in an array where the index of it's node is it's ID-1
+        }
         allEdges = new edge[(numVertices*(numVertices-1))/2];//Creates an array to hold all of the possible edges for the given number of vertices without edge repetitions. n(n-1)/2
-        spanningTrees = new ArrayList<>();
+
         for (int i = 0; i < numVertices; i++) {
             for (int j = 1; j < numVertices; j++) {
                 if (j>i){
-                    allEdges[edgeNum] = new edge(allHotSpots[i], allHotSpots[j]);
+                    allEdges[edgeNum] = new edge(allHotSpots[i], allHotSpots[j]);//goes through all the vertices and creates all of the edges exactly once
                     edgeNum++;
                 }
             }
         }
+        sets = new subset();
     }
 
     public void printEdgeLengths(){
@@ -51,7 +57,48 @@ public class graph {
     //2. Pick the smallest edge. Check if it forms a cycle with the spanning tree formed so far. If cycle is not formed, include this edge. Else, discard it.
     //3. Repeat until there are V-1 edges (where V is the number of vertices in the given graph)
     public void kruskalMST(){
+        int numCheck = 1, stationsPlaced = 0, clustersIdentified = 0;
+        ArrayList<Integer> clusterIDs = new ArrayList<>();
+        addedEdges = new ArrayList<>();
         Arrays.sort(allEdges);
+        addEdge(allEdges[0]);
+        while (addedEdges.size()<allHotSpots.length-(1+(clustersToFind-1))){
+            if (!makesCycle(allEdges[numCheck])){
+                addEdge(allEdges[numCheck]);
+            }
+            numCheck++;
+        }
+
+        //get all of the hotspots and categorise them into groups for each hotspot. Then find the average value for all the points in each hotspot
+        clusterIDs.add(sets.findSet(allNodes[0]).getDataID());
+        for (sNode s:allNodes){
+            Integer i = sets.findSet(s).getDataID();
+            if (!clusterIDs.contains(i)){
+                clusterIDs.add(i);
+            }
+        }
+        int num = 1;
+        for (Integer i:clusterIDs){
+            System.out.println("Cluster ID "+num+++" "+i);
+        }
+    }
+
+    public void addEdge(edge adding){
+        addedEdges.add(adding);
+        int indexN1 = adding.getEnd1().getID(), indexN2 = adding.getEnd2().getID();
+        sNode end1 = allNodes[indexN1-1];
+        sNode end2 = allNodes[indexN2-1];
+        sets.union(end1,end2);
+    }
+
+    public boolean makesCycle(edge checking){
+        int indexN1 = checking.getEnd1().getID(), indexN2 = checking.getEnd2().getID();
+        sNode end1 = allNodes[indexN1-1];
+        sNode end2 = allNodes[indexN2-1];
+        if (sets.findSet(end1).getDataID()==sets.findSet(end2).getDataID())//If the two hotSpots are in the same set/tree then adding the edge with ends of those two hotspots will create a cycle
+            return true;
+         else
+            return false;
 
     }
 }

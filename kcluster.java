@@ -21,6 +21,7 @@ public class kcluster {
                 splitInput = reader.next().split(",");
                 HSList[i] = new hotSpot(Integer.parseInt(splitInput[0]), Double.parseDouble(splitInput[1]), Double.parseDouble(splitInput[2]));
             }
+            numFireStations = Integer.parseInt(args[1]);
 
             if (numHotSpots==0){
                 System.err.println("ERROR: There were no hotspots found in the input file\nThis is most likely this is because the input file specified is empty. A correctly formatted file should have multiple hotspots with one row per hotspot\nHotspot row should be formatted in form: 'int ID, double x-coordinate, double y-coordinate' \nE.g.'1,1.0,1.0'");
@@ -39,7 +40,7 @@ public class kcluster {
             System.exit(1);
         }
 
-        graph graph = new graph(HSList);
+        graph graph = new graph(HSList, numFireStations);
 
         System.out.println("Hello and welcome to Kruskal’s Clustering!\nThe weighted graph of hotspots:\n");
         graph.printEdgeLengths();//Outputs all the connection lengths between all hotSpots

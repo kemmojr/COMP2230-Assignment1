@@ -38,4 +38,9 @@ public class edge implements Comparable<edge>{
 
         return -1;
     }
+
+    @Override
+    public String toString() {
+        return conectedHotSpots[0].getID() + "to" + conectedHotSpots[1].getID() + ". length = " + len;
+    }
 }
