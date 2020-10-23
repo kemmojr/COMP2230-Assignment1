@@ -1,4 +1,11 @@
-import java.lang.reflect.Array;
+/*Author: Timothy Kemmis
+Std no. c3329386
+File: graph.java
+Task: COMP2230 research assignment 1
+Desc: a graph class for running all the main computations involved in the program including generating the "weighted graph" of edge lengths and running
+    kruskals algorithm using the functionality of disjoint sets
+*/
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,7 +17,7 @@ public class graph {
     private sNode[] allNodes;
     private edge[] allEdges;
     private ArrayList<edge> addedEdges;
-    private subset sets;
+    private disjointSets sets;
     private int clustersToFind;
 
     public graph(hotSpot[] hotSpots, int numClusters){
@@ -32,7 +39,7 @@ public class graph {
                 }
             }
         }
-        sets = new subset();
+        sets = new disjointSets();
     }
 
     public void printEdgeLengths(){

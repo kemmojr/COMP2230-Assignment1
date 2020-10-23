@@ -1,3 +1,10 @@
+/*Author: Timothy Kemmis
+Std no. c3329386
+File: edge.java
+Task: COMP2230 research assignment 1
+Desc: a custom edge class to be compared and used in constructing MST's
+*/
+
 import java.text.DecimalFormat;
 
 public class edge implements Comparable<edge>{

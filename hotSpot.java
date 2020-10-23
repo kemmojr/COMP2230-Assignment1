@@ -1,3 +1,10 @@
+/*Author: Timothy Kemmis
+Std no. c3329386
+File: hotSpot.java
+Task: COMP2230 research assignment 1
+Desc: a class used to store all of the data accosiated with each hotspot including the ID
+*/
+
 public class hotSpot {
     private int ID;
     private double x, y;
