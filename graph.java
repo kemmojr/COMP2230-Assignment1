@@ -45,17 +45,29 @@ public class graph {
 
     public void printEdgeLengths(){//outputs the complete list of all edge lengths between all the hotspots aka the "weighted graph"
         int numVertices = allHotSpots.length, edgeNum1 = 0, edgeNum2 = 0;
+        double[][] weightedGraph = new double[numVertices][numVertices];
+        int count = 0;
         for (int i = 0; i < numVertices; i++) {
             for (int j = 0; j < numVertices; j++) {
-                if (i>j){
-                    System.out.print(String.format("%.02f",allEdges[edgeNum1].getLength()) + " ");
-                    edgeNum1++;
-                } else if (j>i){
-                    System.out.print(String.format("%.02f",allEdges[edgeNum2].getLength()) + " ");
-                    edgeNum2++;
-                } else {
-                    System.out.print("0.00 ");
+                if (j>i){
+                    //calc = (numVertices*i)+j-i*j;
+                    weightedGraph[i][j] = allEdges[count].getLength();
+                    weightedGraph[j][i] = allEdges[count].getLength();
+                    count++;
+                    //System.out.print(String.format("%.02f",allEdges[calc].getLength()) + "\t");
+
+                } else if (i==j){
+                    weightedGraph[i][j] = 0.0;
                 }
+            }
+        }
+
+        for (int i = 0; i < numVertices; i++) {
+            for (int j = 0; j < numVertices; j++) {
+                if (i==j)
+                    System.out.print("0\t\t");
+                else
+                    System.out.print(String.format("%.02f",weightedGraph[i][j]) + "\t");
             }
             System.out.println();
         }
