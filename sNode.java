@@ -7,13 +7,13 @@ Desc: a custom node class to be used in disjoint set data structures. Each node 
     different sets then they do not create a cycle.
 */
 
-public class sNode {
-    private sNode parent;
-    private hotSpot data;
-    private int rank;
+public class sNode {//Node class to be used as part of the tree structures in disjoint sets
+    private sNode parent;//The parent node of this node
+    private hotSpot data;//A hotspot point that is the data of the node
+    private int rank;//A metric used to denote the upper bound on the trees height
 
-    public sNode(hotSpot h){
-        parent = this;
+    public sNode(hotSpot h){//makeSet
+        parent = this;//In a new node the parent is set to itself as it is the root of the tree
         data = h;
         rank = 0;
     }
@@ -23,6 +23,7 @@ public class sNode {
         data = h;
     }
 
+    //Getters
     public int getDataID(){
         return data.getID();
     }
@@ -39,6 +40,7 @@ public class sNode {
         return parent;
     }
 
+    //Setters
     public void setParent(sNode parent) {
         this.parent = parent;
     }

@@ -6,8 +6,8 @@ Desc: a class used to store all of the data accosiated with each hotspot includi
 */
 
 public class hotSpot {
-    private int ID;
-    private double x, y;
+    private int ID;//Hotspot ID
+    private double x, y;//X and Y coordinates of the hotspot
 
     //Constructor that initialises the hotspot and all of it's attributes
     public hotSpot(int id, double xVal, double yVal){
@@ -35,7 +35,7 @@ public class hotSpot {
         return y;
     }
 
-    @Override
+    @Override//Overridden toString for outputting the coordinates of the stations which use hotspots to store their cartesian coordinates
     public String toString() {
         return  "(" + x + ", " + y + ")";
     }
